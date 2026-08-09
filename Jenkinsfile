@@ -31,7 +31,7 @@ pipeline {
             }
         }
 
-     stage('Test Docker Login') {
+   stage('Test Docker Login') {
     steps {
         withCredentials([usernamePassword(
             credentialsId: 'dockerhub',
@@ -39,7 +39,8 @@ pipeline {
             passwordVariable: 'DOCKER_PASS'
         )]) {
             powershell '''
-            $env:DOCKER_PASS | docker login -u $env:DOCKER_USER --password-stdin
+            Write-Host "Username: $env:DOCKER_USER"
+            Write-Host "Password Length: $($env:DOCKER_PASS.Length)"
             '''
         }
     }
