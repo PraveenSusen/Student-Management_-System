@@ -40,7 +40,12 @@ pipeline {
         )]) {
 
             powershell '''
-            $env:DOCKER_PASS | docker login -u $env:DOCKER_USER --password-stdin
+            echo Username: $env:DOCKER_USER
+
+            echo $env:DOCKER_PASS | docker login -u $env:DOCKER_USER --password-stdin
+
+            docker info
+
             docker push praveensusen/student-management-system:latest
             '''
         }
