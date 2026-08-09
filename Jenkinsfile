@@ -31,16 +31,17 @@ pipeline {
             }
         }
 
-   stage('Test Docker Login') {
+ stage('Push Docker Image') {
     steps {
         withCredentials([usernamePassword(
             credentialsId: 'dockerhub',
             usernameVariable: 'DOCKER_USER',
             passwordVariable: 'DOCKER_PASS'
         )]) {
+
             powershell '''
-            Write-Host "Username: $env:DOCKER_USER"
-            Write-Host "Password Length: $($env:DOCKER_PASS.Length)"
+            $env:DOCKER_PASS | docker login -u $env:DOCKER_USER --password-stdin
+            docker push praveensusen/student-management-system:latest
             '''
         }
     }
