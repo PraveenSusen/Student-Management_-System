@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'JDK21'
+        maven 'Maven-3.9.16'
+    }
+
     environment {
         IMAGE_NAME = "praveensusen/student-management-system"
         IMAGE_TAG = "latest"
@@ -14,7 +19,7 @@ pipeline {
             }
         }
 
-        stage('Build Jar') {
+        stage('Build Maven') {
             steps {
                 bat 'mvn clean package'
             }
@@ -33,8 +38,11 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
-                    bat 'docker push %IMAGE_NAME%:%IMAGE_TAG%'
+
+                    bat '''
+                    echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                    docker push %IMAGE_NAME%:%IMAGE_TAG%
+                    '''
                 }
             }
         }
