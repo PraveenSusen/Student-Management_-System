@@ -39,14 +39,9 @@ pipeline {
             passwordVariable: 'DOCKER_PASS'
         )]) {
 
-            powershell '''
-            echo Username: $env:DOCKER_USER
-
-            echo $env:DOCKER_PASS | docker login -u $env:DOCKER_USER --password-stdin
-
-            docker info
-
-            docker push praveensusen/student-management-system:latest
+            bat '''
+            echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+            docker push %IMAGE_NAME%:%IMAGE_TAG%
             '''
         }
     }
