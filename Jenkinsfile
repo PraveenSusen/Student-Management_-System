@@ -42,6 +42,7 @@ pipeline {
             bat '''
             docker logout
             docker login -u %DOCKER_USER% --password %DOCKER_PASS%
+            docker push %IMAGE_NAME%:%IMAGE_TAG%
             '''
         }
     }
