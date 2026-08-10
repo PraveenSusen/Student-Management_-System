@@ -20,6 +20,7 @@ spec:
       containers:
       - name: student-management
         image: praveensusen/student-management-system:latest
+        imagePullPolicy: Always
 
         ports:
         - containerPort: 8080
