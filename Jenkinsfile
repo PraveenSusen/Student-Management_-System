@@ -9,6 +9,7 @@ pipeline {
     environment {
         IMAGE_NAME = "praveensusen/student-management-system"
         IMAGE_TAG = "latest"
+        KUBECONFIG = "C:\\Users\\susen\\.kube\\config"
     }
 
     stages {
@@ -48,7 +49,6 @@ pipeline {
             }
         }
 
-        
         stage('Check User') {
             steps {
                 bat '''
@@ -61,6 +61,7 @@ pipeline {
         stage('Check Kubernetes') {
             steps {
                 bat '''
+                echo KUBECONFIG=%KUBECONFIG%
                 kubectl config current-context
                 kubectl cluster-info
                 kubectl get nodes
