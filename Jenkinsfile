@@ -47,6 +47,15 @@ pipeline {
         }
     }
 }
+stage('Check Kubernetes') {
+    steps {
+        bat '''
+        kubectl config current-context
+        kubectl cluster-info
+        kubectl get nodes
+        '''
+    }
+}
 stage('Deploy to Kubernetes') {
     steps {
         bat '''
