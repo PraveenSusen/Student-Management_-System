@@ -31,38 +31,50 @@ pipeline {
             }
         }
 
- stage('Push Docker Image') {
-    steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'dockerhub',
-            usernameVariable: 'DOCKER_USER',
-            passwordVariable: 'DOCKER_PASS'
-        )]) {
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
 
-            bat '''
-            docker logout
-            docker login -u %DOCKER_USER% --password %DOCKER_PASS%
-            docker push %IMAGE_NAME%:%IMAGE_TAG%
-            '''
+                    bat '''
+                    docker logout
+                    docker login -u %DOCKER_USER% --password %DOCKER_PASS%
+                    docker push %IMAGE_NAME%:%IMAGE_TAG%
+                    '''
+                }
+            }
         }
-    }
-}
-stage('Check Kubernetes') {
-    steps {
-        bat '''
-        kubectl config current-context
-        kubectl cluster-info
-        kubectl get nodes
-        '''
-    }
-}
-stage('Deploy to Kubernetes') {
-    steps {
-        bat '''
-        kubectl apply -f k8s/student-deployment.yaml
-        kubectl apply -f k8s/student-service.yaml
-        '''
-    }
-}
+
+        
+        stage('Check User') {
+            steps {
+                bat '''
+                whoami
+                echo %USERPROFILE%
+                '''
+            }
+        }
+
+        stage('Check Kubernetes') {
+            steps {
+                bat '''
+                kubectl config current-context
+                kubectl cluster-info
+                kubectl get nodes
+                '''
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                bat '''
+                kubectl apply -f k8s/student-deployment.yaml
+                kubectl apply -f k8s/student-service.yaml
+                '''
+            }
+        }
     }
 }
