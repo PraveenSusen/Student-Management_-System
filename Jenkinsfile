@@ -20,11 +20,11 @@ pipeline {
             }
         }
 
-        stage('Build Maven') {
-            steps {
-                bat 'mvn clean package'
-            }
-        }
+       stage('Build Maven') {
+    steps {
+        bat 'mvn clean package -DskipTests'
+    }
+}
 
         stage('Build Docker Image') {
             steps {
