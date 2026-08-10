@@ -50,8 +50,8 @@ pipeline {
 stage('Deploy to Kubernetes') {
     steps {
         bat '''
-        kubectl apply -f student-deployment.yaml
-        kubectl apply -f student-service.yaml
+        kubectl apply -f k8s/student-deployment.yaml
+        kubectl apply -f k8s/student-service.yaml
         '''
     }
 }
